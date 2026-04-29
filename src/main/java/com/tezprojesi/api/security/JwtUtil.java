@@ -28,16 +28,13 @@ public class JwtUtil {
     }
 
     public String generateToken(UUID userId, String email, String role) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("role", role);
-        claims.put("email", email);
-        
         return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(userId.toString())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .claim("role", role)
+                .claim("email", email)
+                .subject(userId.toString())
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + jwtExpiration))
+                .signWith(getSigningKey())
                 .compact();
     }
 
@@ -55,10 +52,10 @@ public class JwtUtil {
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parserBuilder()
-                    .setSigningKey(getSigningKey())
+            Jwts.parser()
+                    .verifyWith(getSigningKey())
                     .build()
-                    .parseClaimsJws(token);
+                    .parseSignedClaims(token);
             return true;
         } catch (Exception e) {
             return false;
@@ -66,10 +63,10 @@ public class JwtUtil {
     }
 
     private Claims extractClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
+        return Jwts.parser()
+                .verifyWith(getSigningKey())
                 .build()
-                .parseClaimsJws(token)
-                .getBody();
+                .parseSignedClaims(token)
+                .getPayload();
     }
 }

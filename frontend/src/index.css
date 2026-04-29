@@ -1,24 +1,30 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=DM+Sans:wght@400;500;700&display=swap');
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
 
 :root {
-  --bg-base:    #020408;
-  --bg-surface: #0a0f1b;
-  --bg-raised:  #0d1424;
-  --bg-panel:   rgba(13, 20, 36, 0.85);
+  --bg-base: #05070a;
+  --text-primary: #f8fafc;
+}
 
-  --azure:      #00d1ff;
-  --neon-green: #39ff14;
-  --cyber-yellow: #ffea00;
-  
-  --border:     rgba(0, 209, 255, 0.15);
-  --text-primary:   #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-tech:      'JetBrains Mono', monospace;
-  font-family: 'DM Sans', system-ui, sans-serif;
+@layer utilities {
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+  }
+
+  .animate-shake {
+    animation: shake 0.5s ease-in-out;
+  }
+
+  .animate-pulse-custom {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
 }
 
 * { box-sizing: border-box; }
@@ -93,7 +99,16 @@ input[type="number"] {
   color-scheme: dark;
 }
 
-/* ─── Animasyonlar ─────────────────────────────────── */
+input, textarea {
+  background-color: #0a0f18 !important;
+  color: #ffffff !important;
+}
+
+input::placeholder, textarea::placeholder {
+  color: #475569 !important;
+}
+
+/* Animations */
 
 .route-animated {
   animation: route-flow 4s linear infinite;
@@ -165,7 +180,7 @@ section > * {
   animation: fadeUp 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
-/* ─── Cyber-Azure Neon Buttons ────────────────────── */
+/* Cyber-Azure Neon Buttons */
 
 .neon-red {
   background: rgba(225, 29, 72, 0.1) !important;

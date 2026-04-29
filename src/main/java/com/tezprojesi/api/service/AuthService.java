@@ -47,13 +47,19 @@ public class AuthService {
     }
 
     public AuthResponse login(AuthRequest request) {
+        System.out.println("Login attempt for email: " + request.getEmail());
         var user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> {
+                    System.out.println("User not found: " + request.getEmail());
+                    return new RuntimeException("User not found");
+                });
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
+            System.out.println("Invalid password for: " + request.getEmail());
             throw new RuntimeException("Invalid password");
         }
 
+        System.out.println("Login successful for: " + request.getEmail() + " with role: " + user.getRole());
         String token = jwtUtil.generateToken(user.getId(), user.getEmail(), user.getRole().toString());
 
         return AuthResponse.builder()

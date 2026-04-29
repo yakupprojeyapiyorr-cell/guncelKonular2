@@ -17,6 +17,7 @@ public class TopicService {
 
     private final TopicRepository topicRepository;
     private final TopicSummaryRepository topicSummaryRepository;
+    private final com.tezprojesi.api.repository.LessonRepository lessonRepository;
 
     public List<TopicResponse> getTopicsByLesson(UUID lessonId) {
         return topicRepository.findByLessonId(lessonId).stream()
@@ -34,6 +35,35 @@ public class TopicService {
         var summary = topicSummaryRepository.findByTopicId(topicId)
                 .orElseThrow(() -> new RuntimeException("Topic summary not found"));
         return summary.getContentMarkdown();
+    }
+
+    public TopicResponse createTopic(com.tezprojesi.api.dto.TopicRequest request) {
+        var lesson = lessonRepository.findById(request.getLessonId())
+                .orElseThrow(() -> new RuntimeException("Lesson not found"));
+        
+        Topic topic = Topic.builder()
+                .name(request.getName())
+                .lesson(lesson)
+                .orderIndex(request.getOrderIndex())
+                .build();
+        return mapToResponse(topicRepository.save(topic));
+    }
+
+    public TopicResponse updateTopic(UUID id, com.tezprojesi.api.dto.TopicRequest request) {
+        var topic = topicRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Topic not found"));
+        
+        var lesson = lessonRepository.findById(request.getLessonId())
+                .orElseThrow(() -> new RuntimeException("Lesson not found"));
+        
+        topic.setName(request.getName());
+        topic.setLesson(lesson);
+        topic.setOrderIndex(request.getOrderIndex());
+        return mapToResponse(topicRepository.save(topic));
+    }
+
+    public void deleteTopic(UUID id) {
+        topicRepository.deleteById(id);
     }
 
     private TopicResponse mapToResponse(Topic topic) {

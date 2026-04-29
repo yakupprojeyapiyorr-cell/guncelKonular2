@@ -1,73 +1,71 @@
 import React, { useState } from 'react'
+import LessonManager from '../components/admin/LessonManager'
+import TopicManager from '../components/admin/TopicManager'
 
 export default function AdminPanel() {
   const [activeTab, setActiveTab] = useState('questions')
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 animate-fadeUp">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Paneli</h1>
-        <p className="text-gray-600">Sistem yönetimi ve içerik ekleme</p>
+        <h1 className="text-4xl font-extrabold text-white mb-2">Admin Paneli</h1>
+        <p className="text-slate-400 font-medium">Sistem yönetimi ve içerik yapılandırma merkezi</p>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-4 border-b">
-        <button
-          onClick={() => setActiveTab('questions')}
-          className={`px-6 py-3 font-semibold border-b-2 transition ${
-            activeTab === 'questions'
-              ? 'border-blue-600 text-blue-600'
-              : 'border-transparent text-gray-600'
-          }`}
-        >
-          Sorular
-        </button>
-        <button
-          onClick={() => setActiveTab('exams')}
-          className={`px-6 py-3 font-semibold border-b-2 transition ${
-            activeTab === 'exams'
-              ? 'border-blue-600 text-blue-600'
-              : 'border-transparent text-gray-600'
-          }`}
-        >
-          Sınavlar
-        </button>
-        <button
-          onClick={() => setActiveTab('users')}
-          className={`px-6 py-3 font-semibold border-b-2 transition ${
-            activeTab === 'users'
-              ? 'border-blue-600 text-blue-600'
-              : 'border-transparent text-gray-600'
-          }`}
-        >
-          Kullanıcılar
-        </button>
+      <div className="flex gap-2 bg-[#111620]/60 backdrop-blur-md p-1.5 rounded-2xl border border-white/[0.05] overflow-x-auto no-scrollbar">
+        {[
+          { id: 'lessons', label: 'Dersler', icon: '📚' },
+          { id: 'topics', label: 'Konular', icon: '📎' },
+          { id: 'questions', label: 'Sorular', icon: '📝' },
+          { id: 'exams', label: 'Sınavlar', icon: '🏆' },
+          { id: 'users', label: 'Kullanıcılar', icon: '👥' },
+        ].map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all whitespace-nowrap ${
+              activeTab === tab.id
+                ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20'
+                : 'text-slate-400 hover:text-white hover:bg-white/[0.03]'
+            }`}
+          >
+            <span className="text-lg">{tab.icon}</span>
+            {tab.label}
+          </button>
+        ))}
       </div>
 
-      {/* Content */}
-      <div className="bg-white rounded-lg shadow p-6">
+      {/* Content Container */}
+      <div className="bg-[#111620]/80 backdrop-blur-xl border border-white/[0.08] rounded-2xl shadow-2xl p-8 min-h-[500px]">
+        {activeTab === 'lessons' && <LessonManager />}
+        {activeTab === 'topics' && <TopicManager />}
         {activeTab === 'questions' && (
-          <div>
-            <h2 className="text-xl font-bold mb-4">Soru Yönetimi</h2>
-            <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold mb-4">
+          <div className="text-center py-12">
+            <div className="text-5xl mb-6">📝</div>
+            <h2 className="text-2xl font-bold text-white mb-3">Soru Yönetimi</h2>
+            <p className="text-slate-400 mb-8 max-w-md mx-auto">Soru bankasını yönetin, yeni sorular ekleyin veya mevcut soruları düzenleyin.</p>
+            <button className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-blue-600/20 transition-all active:scale-95">
               + Yeni Soru Ekle
             </button>
-            <p className="text-gray-500 text-center py-8">Soru listeleri burada görülecek</p>
           </div>
         )}
         {activeTab === 'exams' && (
-          <div>
-            <h2 className="text-xl font-bold mb-4">Sınav Yönetimi</h2>
-            <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-semibold mb-4">
+          <div className="text-center py-12">
+            <div className="text-5xl mb-6">🏆</div>
+            <h2 className="text-2xl font-bold text-white mb-3">Sınav Yönetimi</h2>
+            <p className="text-slate-400 mb-8 max-w-md mx-auto">Sınavlar oluşturun, süresini belirleyin ve öğrencilerin performansını takip edin.</p>
+            <button className="bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-emerald-600/20 transition-all active:scale-95">
               + Yeni Sınav Oluştur
             </button>
-            <p className="text-gray-500 text-center py-8">Sınav listeleri burada görülecek</p>
           </div>
         )}
         {activeTab === 'users' && (
-          <div>
-            <h2 className="text-xl font-bold mb-4">Kullanıcı Yönetimi</h2>
-            <p className="text-gray-500 text-center py-8">Kullanıcı listeleri burada görülecek</p>
+          <div className="text-center py-12">
+            <div className="text-5xl mb-6">👥</div>
+            <h2 className="text-2xl font-bold text-white mb-3">Kullanıcı Yönetimi</h2>
+            <p className="text-slate-400 mb-8 max-w-md mx-auto">Sistemdeki kullanıcıları görüntüleyin ve rollerini yönetin.</p>
+            <p className="text-blue-400 font-medium">Bu özellik çok yakında burada olacak.</p>
           </div>
         )}
       </div>

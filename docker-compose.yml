@@ -21,20 +21,6 @@ services:
     networks:
       - focusflow-network
 
-  # Redis Cache
-  redis:
-    image: redis:7-alpine
-    container_name: focusflow-redis
-    ports:
-      - "6379:6379"
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - focusflow-network
-
   # Spring Boot Backend
   backend:
     build:
@@ -47,15 +33,11 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/focusflow
       SPRING_DATASOURCE_USERNAME: focusflow
       SPRING_DATASOURCE_PASSWORD: focusflow123
-      SPRING_REDIS_HOST: redis
-      SPRING_REDIS_PORT: 6379
       JWT_SECRET: ${JWT_SECRET:-your-super-secret-key-change-in-production}
       YOUTUBE_API_KEY: ${YOUTUBE_API_KEY:-}
       LLM_API_KEY: ${LLM_API_KEY:-}
     depends_on:
       db:
-        condition: service_healthy
-      redis:
         condition: service_healthy
     networks:
       - focusflow-network
