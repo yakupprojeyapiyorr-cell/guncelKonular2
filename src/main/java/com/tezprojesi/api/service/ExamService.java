@@ -3,6 +3,7 @@ package com.tezprojesi.api.service;
 import com.tezprojesi.api.domain.*;
 import com.tezprojesi.api.dto.ExamResultResponse;
 import com.tezprojesi.api.dto.ExamResponse;
+import com.tezprojesi.api.dto.ExamCreateRequest;
 import com.tezprojesi.api.dto.UserAnswerRequest;
 import com.tezprojesi.api.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,10 @@ public class ExamService {
     private final ExamResultRepository examResultRepository;
     private final UserAnswerRepository userAnswerRepository;
     private final QuestionRepository questionRepository;
+    private final ExamQuestionRepository examQuestionRepository;
+    private final ScoringService scoringService;
+    private final GamificationService gamificationService;
+    private final NotificationService notificationService;
 
     public List<ExamResponse> getPublishedExams() {
         return examRepository.findByIsPublishedTrue().stream()
@@ -36,6 +41,40 @@ public class ExamService {
         var exam = examRepository.findById(examId)
                 .orElseThrow(() -> new RuntimeException("Exam not found"));
         return mapToResponse(exam);
+    }
+
+    public ExamResponse createExam(ExamCreateRequest request, UUID adminId) {
+        var exam = Exam.builder()
+                .title(request.getTitle())
+                .durationMinutes(request.getDurationMinutes())
+                .createdBy(User.builder().id(adminId).build())
+                .isPublished(false)
+                .build();
+
+        exam = examRepository.save(exam);
+
+        for (int i = 0; i < request.getQuestionIds().size(); i++) {
+            UUID questionId = request.getQuestionIds().get(i);
+            var question = questionRepository.findById(questionId)
+                    .orElseThrow(() -> new RuntimeException("Question not found: " + questionId));
+            
+            var examQuestion = ExamQuestion.builder()
+                    .exam(exam)
+                    .question(question)
+                    .orderIndex(i)
+                    .build();
+            
+            examQuestionRepository.save(examQuestion);
+        }
+        
+        return mapToResponse(exam);
+    }
+
+    public ExamResponse publishExam(UUID examId) {
+        var exam = examRepository.findById(examId)
+                .orElseThrow(() -> new RuntimeException("Exam not found"));
+        exam.setIsPublished(true);
+        return mapToResponse(examRepository.save(exam));
     }
 
     public ExamResultResponse submitExam(UUID examId, UUID userId, List<UserAnswerRequest> answers) {
@@ -90,6 +129,17 @@ public class ExamService {
         examResult.setNetScore(netScore);
         examResult = examResultRepository.save(examResult);
 
+        // Kullanıcının skorunu ve streak durumunu güncelle
+        scoringService.updateUserScore(userId);
+        gamificationService.updateStreak(userId);
+
+        // Sonuç bildirimi gönder
+        notificationService.createNotification(userId,
+            com.tezprojesi.api.domain.Notification.NotificationType.EXAM_START,
+            "Sınav Tamamlandı! 📝",
+            exam.getTitle() + " sınavından " + netScore + " net yaptın.",
+            "/stats");
+
         return mapResultToResponse(examResult);
     }
 
@@ -118,10 +168,12 @@ public class ExamService {
         return ExamResultResponse.builder()
                 .id(result.getId())
                 .examId(result.getExam().getId())
+                .userName(result.getUser() != null ? result.getUser().getName() : "Anonim")
                 .correctCount(result.getCorrectCount())
                 .wrongCount(result.getWrongCount())
                 .blankCount(result.getBlankCount())
                 .netScore(result.getNetScore())
+                .totalScore(result.getNetScore()) // Using netScore as the specific exam score
                 .completedAt(result.getCompletedAt())
                 .build();
     }

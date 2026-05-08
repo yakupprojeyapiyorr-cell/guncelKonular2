@@ -26,6 +26,7 @@ public class Playlist {
     private String youtubePlaylistId;
     private String title;
     private Integer videoCount;
+    private Integer totalDurationMinutes;
 
     @ManyToOne
     @JoinColumn(name = "added_by")

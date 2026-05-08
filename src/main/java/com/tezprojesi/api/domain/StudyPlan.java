@@ -25,10 +25,21 @@ public class StudyPlan {
 
     private LocalDate planDate;
 
+    @ManyToOne
+    @JoinColumn(name = "lesson_id")
+    private Lesson lesson;
+
+    @ManyToOne
+    @JoinColumn(name = "topic_id")
+    private Topic topic;
+
+    private Integer durationMinutes;
+
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    private Boolean isCompleted;
+    @Builder.Default
+    private Boolean isCompleted = false;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

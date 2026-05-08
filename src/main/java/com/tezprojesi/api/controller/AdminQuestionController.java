@@ -18,11 +18,28 @@ public class AdminQuestionController {
 
     private final QuestionService questionService;
 
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<org.springframework.data.domain.Page<QuestionResponse>> getQuestions(
+            @RequestParam UUID topicId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+        return ResponseEntity.ok(questionService.getQuestionsByTopic(topicId, org.springframework.data.domain.PageRequest.of(page, size)));
+    }
+
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<QuestionResponse> createQuestion(
             @RequestBody QuestionCreateRequest request) {
         return ResponseEntity.ok(questionService.createQuestion(request, null));
+    }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<QuestionResponse> updateQuestion(
+            @PathVariable UUID id,
+            @RequestBody QuestionCreateRequest request) {
+        return ResponseEntity.ok(questionService.updateQuestion(id, request));
     }
 
     @DeleteMapping("/{id}")

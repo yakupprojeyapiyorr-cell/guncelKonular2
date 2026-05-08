@@ -1,6 +1,11 @@
 import React, { useState } from 'react'
 import LessonManager from '../components/admin/LessonManager'
 import TopicManager from '../components/admin/TopicManager'
+import SummaryManager from '../components/admin/SummaryManager'
+import QuestionManager from '../components/admin/QuestionManager'
+import GeneratedQuestionManager from '../components/admin/GeneratedQuestionManager'
+import QuestionPoolDashboard from '../components/admin/QuestionPoolDashboard'
+import ExamManager from '../components/admin/ExamManager'
 
 export default function AdminPanel() {
   const [activeTab, setActiveTab] = useState('questions')
@@ -17,7 +22,10 @@ export default function AdminPanel() {
         {[
           { id: 'lessons', label: 'Dersler', icon: '📚' },
           { id: 'topics', label: 'Konular', icon: '📎' },
+          { id: 'pool-dashboard', label: 'Havuz Analizi', icon: '📊' },
           { id: 'questions', label: 'Sorular', icon: '📝' },
+          { id: 'ai-questions', label: 'AI Soru Üretimi', icon: '✨' },
+          { id: 'summaries', label: 'MEB Özetleri', icon: '📖' },
           { id: 'exams', label: 'Sınavlar', icon: '🏆' },
           { id: 'users', label: 'Kullanıcılar', icon: '👥' },
         ].map((tab) => (
@@ -40,26 +48,11 @@ export default function AdminPanel() {
       <div className="bg-[#111620]/80 backdrop-blur-xl border border-white/[0.08] rounded-2xl shadow-2xl p-8 min-h-[500px]">
         {activeTab === 'lessons' && <LessonManager />}
         {activeTab === 'topics' && <TopicManager />}
-        {activeTab === 'questions' && (
-          <div className="text-center py-12">
-            <div className="text-5xl mb-6">📝</div>
-            <h2 className="text-2xl font-bold text-white mb-3">Soru Yönetimi</h2>
-            <p className="text-slate-400 mb-8 max-w-md mx-auto">Soru bankasını yönetin, yeni sorular ekleyin veya mevcut soruları düzenleyin.</p>
-            <button className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-blue-600/20 transition-all active:scale-95">
-              + Yeni Soru Ekle
-            </button>
-          </div>
-        )}
-        {activeTab === 'exams' && (
-          <div className="text-center py-12">
-            <div className="text-5xl mb-6">🏆</div>
-            <h2 className="text-2xl font-bold text-white mb-3">Sınav Yönetimi</h2>
-            <p className="text-slate-400 mb-8 max-w-md mx-auto">Sınavlar oluşturun, süresini belirleyin ve öğrencilerin performansını takip edin.</p>
-            <button className="bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-emerald-600/20 transition-all active:scale-95">
-              + Yeni Sınav Oluştur
-            </button>
-          </div>
-        )}
+        {activeTab === 'pool-dashboard' && <QuestionPoolDashboard />}
+        {activeTab === 'summaries' && <SummaryManager />}
+        {activeTab === 'questions' && <QuestionManager />}
+        {activeTab === 'ai-questions' && <GeneratedQuestionManager />}
+        {activeTab === 'exams' && <ExamManager />}
         {activeTab === 'users' && (
           <div className="text-center py-12">
             <div className="text-5xl mb-6">👥</div>

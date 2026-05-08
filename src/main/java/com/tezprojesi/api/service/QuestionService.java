@@ -49,11 +49,13 @@ public class QuestionService {
         var question = Question.builder()
                 .topic(topic)
                 .imageUrl(request.getImageUrl())
+                .questionImageUrl(request.getQuestionImageUrl())
+                .solutionImageUrl(request.getSolutionImageUrl())
                 .questionText(request.getQuestionText())
                 .difficulty(Difficulty.valueOf(request.getDifficulty()))
                 .coefficient(request.getCoefficient())
                 .correctOption(request.getCorrectOption())
-                .createdBy(null) // Will be set by controller
+                .createdBy(null)
                 .build();
 
         question = questionRepository.save(question);
@@ -70,6 +72,39 @@ public class QuestionService {
         }
 
         return getQuestion(question.getId());
+    }
+
+    public QuestionResponse updateQuestion(UUID id, QuestionCreateRequest request) {
+        var question = questionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Question not found"));
+        
+        var topic = topicRepository.findById(request.getTopicId())
+                .orElseThrow(() -> new RuntimeException("Topic not found"));
+
+        question.setTopic(topic);
+        question.setImageUrl(request.getImageUrl());
+        question.setQuestionImageUrl(request.getQuestionImageUrl());
+        question.setSolutionImageUrl(request.getSolutionImageUrl());
+        question.setQuestionText(request.getQuestionText());
+        question.setDifficulty(Difficulty.valueOf(request.getDifficulty()));
+        question.setCoefficient(request.getCoefficient());
+        question.setCorrectOption(request.getCorrectOption());
+
+        question = questionRepository.save(question);
+
+        // Update options: simplest way is delete and re-add
+        questionOptionRepository.deleteByQuestionId(id);
+        for (var optionReq : request.getOptions()) {
+            var option = QuestionOption.builder()
+                    .question(question)
+                    .optionIndex(optionReq.getIndex())
+                    .optionText(optionReq.getText())
+                    .whyText(optionReq.getWhyText())
+                    .build();
+            questionOptionRepository.save(option);
+        }
+
+        return getQuestion(id);
     }
 
     public void deleteQuestion(UUID questionId) {
@@ -89,6 +124,8 @@ public class QuestionService {
                 .id(question.getId())
                 .topicId(question.getTopic().getId())
                 .imageUrl(question.getImageUrl())
+                .questionImageUrl(question.getQuestionImageUrl())
+                // solutionImageUrl kasıtlı olarak RESPONSE'a eklenmedi — öğrenciye gizli
                 .questionText(question.getQuestionText())
                 .difficulty(question.getDifficulty().toString())
                 .coefficient(question.getCoefficient())

@@ -10,9 +10,11 @@ export default function RegisterPage() {
   const [error, setError] = useState('')
   const [formData, setFormData] = useState({
     name: '',
+    surname: '',
     email: '',
     password: '',
     confirmPassword: '',
+    profilePictureUrl: '',
   })
 
   const handleChange = (e) => {
@@ -34,8 +36,10 @@ export default function RegisterPage() {
     try {
       const { data } = await apiClient.post('/auth/register', {
         name: formData.name,
+        surname: formData.surname,
         email: formData.email,
         password: formData.password,
+        profilePictureUrl: formData.profilePictureUrl || null,
         role: 'STUDENT',
       })
       setUser(data, data.token)
@@ -69,19 +73,35 @@ export default function RegisterPage() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="space-y-2">
-              <label className="block text-sm font-semibold text-slate-300 ml-1">
-                Ad Soyad
-              </label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                className="w-full bg-[#0a0f18] border border-white/[0.1] text-white rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 transition-all placeholder:text-slate-600"
-                placeholder="Adınız Soyadınız"
-              />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="block text-sm font-semibold text-slate-300 ml-1">
+                  Ad
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                  className="w-full bg-[#0a0f18] border border-white/[0.1] text-white rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all placeholder:text-slate-600"
+                  placeholder="Adınız"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="block text-sm font-semibold text-slate-300 ml-1">
+                  Soyad
+                </label>
+                <input
+                  type="text"
+                  name="surname"
+                  value={formData.surname}
+                  onChange={handleChange}
+                  required
+                  className="w-full bg-[#0a0f18] border border-white/[0.1] text-white rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all placeholder:text-slate-600"
+                  placeholder="Soyadınız"
+                />
+              </div>
             </div>
 
             <div className="space-y-2">
@@ -96,6 +116,20 @@ export default function RegisterPage() {
                 required
                 className="w-full bg-[#0a0f18] border border-white/[0.1] text-white rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 transition-all placeholder:text-slate-600"
                 placeholder="isim@ornek.com"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-slate-300 ml-1">
+                Profil Fotoğrafı URL (Opsiyonel)
+              </label>
+              <input
+                type="text"
+                name="profilePictureUrl"
+                value={formData.profilePictureUrl}
+                onChange={handleChange}
+                className="w-full bg-[#0a0f18] border border-white/[0.1] text-white rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all placeholder:text-slate-600"
+                placeholder="https://gorsel-linki.com/foto.jpg"
               />
             </div>
 

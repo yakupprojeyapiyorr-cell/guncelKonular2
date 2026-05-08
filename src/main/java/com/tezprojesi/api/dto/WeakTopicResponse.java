@@ -16,4 +16,6 @@ public class WeakTopicResponse {
     private String topicName;
     private Integer wrongCount;
     private Double wrongPercentage;
+    private Double accuracyRate;
+    private String recommendation;
 }

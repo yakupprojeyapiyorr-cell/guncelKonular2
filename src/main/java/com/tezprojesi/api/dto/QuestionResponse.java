@@ -17,6 +17,8 @@ public class QuestionResponse {
     private UUID id;
     private UUID topicId;
     private String imageUrl;
+    private String questionImageUrl; // Sorunun görseli (fotoğraf)
+    // solutionImageUrl burada YOK — öğrenciye asla gönderilmez, sadece AI servisi DB'den okur
     private String questionText;
     private String difficulty;
     private BigDecimal coefficient;

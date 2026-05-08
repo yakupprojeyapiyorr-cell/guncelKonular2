@@ -1,6 +1,5 @@
 package com.tezprojesi.api.security;
 
-import com.tezprojesi.api.domain.User;
 import com.tezprojesi.api.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

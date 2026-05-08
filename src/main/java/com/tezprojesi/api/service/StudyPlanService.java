@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 public class StudyPlanService {
 
     private final StudyPlanRepository studyPlanRepository;
+    private final NotificationService notificationService;
 
     public StudyPlanResponse createPlan(UUID userId, StudyPlanRequest request) {
         var plan = StudyPlan.builder()
@@ -47,11 +48,21 @@ public class StudyPlanService {
         if (request.getContent() != null) {
             plan.setContent(request.getContent());
         }
+        boolean wasCompleted = plan.getIsCompleted();
         if (request.getIsCompleted() != null) {
             plan.setIsCompleted(request.getIsCompleted());
         }
 
         plan = studyPlanRepository.save(plan);
+
+        // Eğer plan yeni tamamlandıysa bildirim gönder
+        if (!wasCompleted && plan.getIsCompleted()) {
+            notificationService.createNotification(plan.getUser().getId(),
+                com.tezprojesi.api.domain.Notification.NotificationType.GOAL_ACHIEVED,
+                "Hedef Tamamlandı! 🎉",
+                "Harika! '" + plan.getContent() + "' hedefini tamamladın.",
+                "/plans");
+        }
         return mapToResponse(plan);
     }
 

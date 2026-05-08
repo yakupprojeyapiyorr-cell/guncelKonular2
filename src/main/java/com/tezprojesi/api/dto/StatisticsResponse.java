@@ -17,4 +17,5 @@ public class StatisticsResponse {
     private Double averageNetScore;
     private Integer totalPomodoroMinutes;
     private Double totalPomodoroHours;
+    private java.util.List<TopicStatisticsResponse> topicStats;
 }

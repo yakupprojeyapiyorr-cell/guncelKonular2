@@ -16,5 +16,7 @@ public class AuthResponse {
     private String email;
     private String name;
     private String role;
+    private String profilePictureUrl;
     private String token;
+    private Boolean onboardingCompleted;
 }

@@ -24,6 +24,7 @@ public class PomodoroService {
 
     private final PomodoroSessionRepository pomodoroSessionRepository;
     private final TopicRepository topicRepository;
+    private final GamificationService gamificationService;
 
     public PomodoroSessionResponse startSession(UUID userId, UUID topicId) {
         var session = PomodoroSession.builder()
@@ -46,6 +47,9 @@ public class PomodoroService {
             session.setDurationMinutes(durationMinutes);
         }
         session = pomodoroSessionRepository.save(session);
+        
+        // Streak güncelle
+        gamificationService.updateStreak(session.getUser().getId());
 
         return mapToResponse(session);
     }

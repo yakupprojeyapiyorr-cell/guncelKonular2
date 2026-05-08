@@ -15,7 +15,9 @@ import java.util.UUID;
 @AllArgsConstructor
 public class QuestionCreateRequest {
     private UUID topicId;
-    private String imageUrl;
+    private String imageUrl;             // Legacy
+    private String questionImageUrl;     // Sorunun fotoğrafı (tüm dersler)
+    private String solutionImageUrl;     // Çözüm fotoğrafı (sadece sayısal, öğrenciye gizli)
     private String questionText;
     private String difficulty;
     private BigDecimal coefficient;

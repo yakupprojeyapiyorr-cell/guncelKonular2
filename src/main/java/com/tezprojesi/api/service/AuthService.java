@@ -3,6 +3,7 @@ package com.tezprojesi.api.service;
 import com.tezprojesi.api.domain.User;
 import com.tezprojesi.api.dto.AuthRequest;
 import com.tezprojesi.api.dto.AuthResponse;
+import com.tezprojesi.api.repository.UserProfileRepository;
 import com.tezprojesi.api.repository.UserRepository;
 import com.tezprojesi.api.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     private final UserRepository userRepository;
+    private final UserProfileRepository userProfileRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
@@ -28,8 +30,10 @@ public class AuthService {
 
         var user = User.builder()
                 .name(request.getName())
+                .surname(request.getSurname())
                 .email(request.getEmail())
                 .passwordHash(passwordEncoder.encode(request.getPassword()))
+                .profilePictureUrl(request.getProfilePictureUrl())
                 .role(role)
                 .build();
 
@@ -40,9 +44,11 @@ public class AuthService {
         return AuthResponse.builder()
                 .id(user.getId())
                 .email(user.getEmail())
-                .name(user.getName())
+                .name(user.getName() + " " + user.getSurname())
                 .role(user.getRole().toString())
+                .profilePictureUrl(user.getProfilePictureUrl())
                 .token(token)
+                .onboardingCompleted(false)
                 .build();
     }
 
@@ -62,12 +68,18 @@ public class AuthService {
         System.out.println("Login successful for: " + request.getEmail() + " with role: " + user.getRole());
         String token = jwtUtil.generateToken(user.getId(), user.getEmail(), user.getRole().toString());
 
+        boolean onboarded = userProfileRepository.findByUserId(user.getId())
+                .map(p -> p.getOnboardingCompleted() != null && p.getOnboardingCompleted())
+                .orElse(false);
+
         return AuthResponse.builder()
                 .id(user.getId())
                 .email(user.getEmail())
-                .name(user.getName())
+                .name(user.getName() + " " + user.getSurname())
                 .role(user.getRole().toString())
+                .profilePictureUrl(user.getProfilePictureUrl())
                 .token(token)
+                .onboardingCompleted(onboarded)
                 .build();
     }
 }

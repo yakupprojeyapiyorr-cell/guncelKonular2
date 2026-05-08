@@ -24,7 +24,14 @@ public class Question {
     @JoinColumn(name = "topic_id", nullable = false)
     private Topic topic;
 
-    private String imageUrl;
+    // Soru görseli (tüm dersler) - öğrenci bunu görüyor, ama fotoğraf olduğunu bilmiyor
+    // Admin fotoğraf yükler, GPT metne çevirir, öğrenci temiz metin görür
+    private String questionImageUrl;
+
+    // Çözüm görseli (sadece sayısal dersler) - öğrenci HİÇ görmez, AI arka planda kullanır
+    private String solutionImageUrl;
+
+    private String imageUrl; // Legacy - admin panelinde görünen görsel URL'si
     private String questionText;
 
     @Enumerated(EnumType.STRING)
@@ -46,6 +53,23 @@ public class Question {
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<QuestionOption> options;
+
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private QuestionSource source = QuestionSource.MANUAL;
+
+    @ElementCollection
+    private List<String> tags;
+
+    @Builder.Default
+    private int poolVersion = 1;
+
+    @Builder.Default
+    private boolean isActive = true;
+
+    public enum QuestionSource {
+        MANUAL, GENERATED, IMPORTED
+    }
 
     public enum Difficulty {
         EASY, MEDIUM, HARD, EXAM

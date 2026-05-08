@@ -10,4 +10,5 @@ import java.util.UUID;
 @Repository
 public interface VideoProgressRepository extends JpaRepository<VideoProgress, UUID> {
     List<VideoProgress> findByUserIdAndPlaylistId(UUID userId, UUID playlistId);
+    java.util.Optional<VideoProgress> findByUserIdAndPlaylistIdAndYoutubeVideoId(UUID userId, UUID playlistId, String youtubeVideoId);
 }

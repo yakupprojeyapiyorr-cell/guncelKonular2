@@ -1,41 +1,50 @@
 spring:
   application:
-    name: focusflow
+    name: focusFlow
+  profiles:
+    active: dev
 
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
   datasource:
-    url: jdbc:h2:mem:focusflow;DB_CLOSE_DELAY=-1
-    username: sa
-    password: 
-    driver-class-name: org.h2.Driver
-
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-
+    url: jdbc:postgresql://localhost:5432/focusFlow
+    username: postgres
+    password: "12345"
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
-        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
-    defer-datasource-initialization: true
+  h2:
+    console:
+      enabled: false
 
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/focusFlow}
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD:12345}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
 
-  jackson:
-    default-property-inclusion: non_null
-    serialization:
-      write-dates-as-timestamps: false
-
-  web:
-    cors:
-      allowed-origins: http://localhost:3000, http://localhost:5173
-      allowed-methods: GET, POST, PUT, DELETE, OPTIONS
-      allowed-headers: "*"
-      allow-credentials: true
-
+---
+# Ortak Ayarlar
 jwt:
   secret: ${JWT_SECRET:your-super-secret-key-change-in-production}
   expiration: 86400000
@@ -53,4 +62,3 @@ logging:
   level:
     root: INFO
     com.tezprojesi: DEBUG
-

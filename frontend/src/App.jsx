@@ -12,15 +12,24 @@ import StatsPage from './pages/StatsPage'
 import PomodoroPage from './pages/PomodoroPage'
 import PlanPage from './pages/PlanPage'
 import AdminPanel from './pages/AdminPanel'
+import ProfilePage from './pages/ProfilePage'
+import PracticePage from './pages/PracticePage'
 
 // Layout
 import Layout from './components/Layout'
+
+import OnboardingPage from './pages/OnboardingPage'
 
 function ProtectedRoute({ children, allowedRoles = [] }) {
   const { isAuthenticated, user } = useAuthStore()
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />
+  }
+
+  // Redirect to onboarding if not completed and not admin
+  if (user?.role !== 'ADMIN' && !user?.onboardingCompleted && window.location.pathname !== '/onboarding') {
+    return <Navigate to="/onboarding" replace />
   }
 
   if (allowedRoles.length > 0 && !allowedRoles.includes(user?.role)) {
@@ -59,6 +68,15 @@ export default function App() {
             <PublicRoute>
               <RegisterPage />
             </PublicRoute>
+          }
+        />
+
+        <Route
+          path="/onboarding"
+          element={
+            <ProtectedRoute>
+              <OnboardingPage />
+            </ProtectedRoute>
           }
         />
 
@@ -125,6 +143,28 @@ export default function App() {
         />
 
         {/* Admin Routes */}
+        <Route
+          path="/practice"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <PracticePage />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <ProfilePage />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path="/admin"
           element={

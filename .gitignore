@@ -11,3 +11,5 @@ frontend/dist-ssr/
 
 .DS_Store
 Thumbs.db
+.env
+.env.local

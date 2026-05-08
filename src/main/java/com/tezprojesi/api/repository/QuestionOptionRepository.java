@@ -10,4 +10,5 @@ import java.util.UUID;
 @Repository
 public interface QuestionOptionRepository extends JpaRepository<QuestionOption, UUID> {
     List<QuestionOption> findByQuestionIdOrderByOptionIndex(UUID questionId);
+    void deleteByQuestionId(UUID questionId);
 }

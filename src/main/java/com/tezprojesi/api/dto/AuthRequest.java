@@ -13,5 +13,7 @@ public class AuthRequest {
     private String email;
     private String password;
     private String name;
+    private String surname;
+    private String profilePictureUrl;
     private String role;
 }

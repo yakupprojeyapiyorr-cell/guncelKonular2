@@ -20,5 +20,7 @@ public class ExamResultResponse {
     private Integer wrongCount;
     private Integer blankCount;
     private BigDecimal netScore;
+    private String userName;
+    private BigDecimal totalScore;
     private LocalDateTime completedAt;
 }

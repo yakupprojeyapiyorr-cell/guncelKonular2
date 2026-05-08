@@ -1,52 +1,93 @@
-# 🚀 FocusFlow - YKS Hazırlık Platformu
+# FocusFlow - YKS Hazırlık ve Odaklanma Platformu
 
-FocusFlow, modern tasarımı ve güçlü altyapısı ile öğrencilerin YKS hazırlık sürecini optimize eden bir eğitim platformudur.
+FocusFlow, öğrencilerin YKS (Yükseköğretim Kurumları Sınavı) hazırlık sürecini modernize eden, verimliliği artıran ve başarıyı ölçülebilir kılan kapsamlı bir eğitim platformudur.
 
-## ✅ Şu Ana Kadar Yapılanlar
+## 📊 Proje Durum Raporu (Güncel)
 
-### 🎨 Tasarım ve UI/UX
-- **Premium Glassmorphism Tasarımı:** Tüm sayfalar (Giriş, Kayıt, Dashboard, Dersler, Admin Paneli) modern, koyu tema ve cam efekti (glassmorphism) estetiğiyle baştan tasarlandı.
-- **Dinamik Dashboard:** Öğrenci paneli, admin tarafından eklenen ders sayısını ve çalışma istatistiklerini gösterecek şekilde dinamik hale getirildi.
-- **Ders Listeleme:** Dersler sayfası, backend'den gelen verileri şık kart tasarımlarıyla listeleyecek şekilde güncellendi.
+### ✅ Tamamen Çalışan Özellikler
+- **Kimlik Doğrulama:** JWT tabanlı Login/Register ve Role-based (Admin/Öğrenci) erişim.
+- **Ders & Müfredat:** Konu hiyerarşisi, video takip sistemi (tikleme) ve toplam süre hesaplama.
+- **Soru Bankası:** 5 şıklı, detaylı çözüm açıklamalı manuel soru ekleme ve yönetimi.
+- **Sınav Sistemi:** Online deneme sınavı, net hesaplama ve anlık **Leaderboard** (Sıralama).
+- **Gamification:** Günlük çalışma serisi (Streak) ve kazanılabilir rozetler (Badges).
+- **Hedef Sistemi:** Günlük/Haftalık soru ve süre hedefleri belirleme ve progress takibi.
+- **Bildirimler:** Uygulama içi bildirim merkezi (Pomodoro bitti, hedef tamamlandı vb.).
+- **Onboarding:** Yeni kullanıcılar için 3 adımlı hedef belirleme sihirbazı.
+- **Premium UI:** Tüm sayfalar için Glassmorphism + Dark Mode tasarımı.
 
-### ⚙️ Backend ve Altyapı
-- **Spring Boot 3.2.0 Entegrasyonu:** Güvenlik ve performans için en güncel Spring Boot yapısı kullanıldı.
-- **JWT Kimlik Doğrulama:** Güvenli giriş-çıkış işlemleri için JSON Web Token (JWT) altyapısı kuruldu.
-- **Gelişmiş Güvenlik Yapılandırması:** CORS sorunları giderildi ve rol tabanlı yetkilendirme (Admin/Öğrenci) sistemi optimize edildi.
-- **Otomatik Veri Başlatıcı (DataSeeder):** Uygulama her başladığında admin hesabının (`admin@focusflow.com`) hazır olmasını sağlayan sistem eklendi.
+### 🤖 AI-Bağımlı Özellikler (OPENAI_API_KEY Gerektirir)
+- **Konu Asistanı:** Ders sayfasındaki RAG tabanlı chatbot (Konu özetlerini baz alarak açıklar).
+- **Çalışma Programı:** Öğrenci verilerine göre haftalık program üretici.
+- **AI Soru Üretimi:** Admin panelinde tek tıkla özgün YKS sorusu oluşturma.
+- **Zayıf Nokta Analizi:** Başarı oranlarına göre AI destekli aksiyon planı raporu.
 
-### 🛠️ İçerik Yönetimi (Admin)
-- **Ders Yönetimi:** Adminlerin ders ekleme, silme ve düzenleme yapabileceği modern arayüz tamamlandı.
-- **Konu Yönetimi:** Derslere bağlı konuların yönetilebildiği hiyerarşik yapı kuruldu.
-
----
-
-## 📅 Gelecek Yol Haritası (Yapılacaklar)
-
-### 1. PostgreSQL Geçişi (Kritik)
-- [ ] `application.yml` dosyasının PostgreSQL veritabanı bilgilerine göre güncellenmesi.
-- [ ] Veritabanı şemalarının (Table definitions) PostgreSQL uyumlu hale getirilmesi.
-
-### 2. Soru Bankası Modülü
-- [ ] **Backend:** Soruların ders ve konu bazlı saklanacağı veritabanı yapısının kurulması.
-- [ ] **Frontend:** Görsel destekli (görüntü yüklenebilir) soru ekleme ekranının yapılması.
-
-### 3. Sınav ve Analiz Sistemi
-- [ ] **Deneme Sınavları:** Öğrencilerin süre tutarak çözebileceği sınav modülü.
-- [ ] **Performans Analizi:** Çözülen sorulara göre öğrencinin eksik olduğu konuların AI destekli tespiti.
-
-### 4. Çalışma Araçları
-- [ ] **Pomodoro Zamanlayıcı:** Dashboard'a entegre odaklanma aracı.
-- [ ] **Hedef Belirleme:** Günlük ve haftalık çalışma hedefleri sistemi.
+### ⏳ Gelecek Planlaması (Eklenecekler)
+- **PWA Desteği:** Uygulamanın offline çalışabilmesi ve mobile kurulabilmesi.
+- **Web Push:** Tarayıcı kapalıyken bile gelen gerçek zamanlı bildirimler.
+- **Vektör Veritabanı:** RAG için `pgvector` tam entegrasyonu (Şu an in-memory simüle ediliyor).
 
 ---
 
-## 🛠️ Kurulum Notları
-Proje şu an **Frontend (Vite/React)** ve **Backend (Spring Boot)** olmak üzere iki ana dizinden oluşmaktadır.
+## 🚀 Öne Çıkan Özellikler
 
-**Frontend:** `npm run dev`
-**Backend:** `mvn spring-boot:run`
+### 🎓 Eğitim ve İçerik Yönetimi
+- **Ders & Konu Hiyerarşisi:** Düzenli bir müfredat yapısı.
+- **AI Destekli MEB Özetleri:** MEB kitaplarının LLM (Yapay Zeka) ile özetlenmiş, Markdown formatında içerikleri.
+- **YouTube Entegrasyonu:** Ders videolarını platform içinden takip etme.
+- **Video İlerleme Takibi:** İzlenen videoların yanındaki "tik" sembolü ile tamamlanma durumu.
+- **Playlist Süre Hesaplama:** Toplam video süresini otomatik görme.
 
-**Admin Giriş Bilgileri:**
-- **Email:** `admin@focusflow.com`
+### 📝 Soru Bankası ve Denemeler
+- **Gelişmiş Soru Yönetimi:** Görsel destekli, 5 şıklı, her şık için detaylı çözüm açıklamalı sorular.
+- **Dinamik Puanlama:** Sorulara katsayı atayarak gerçekçi puan hesaplama.
+- **Sınav Modülü:** Belirlenen süre ve soru sayısına göre online denemeler.
+- **Liderlik Tablosu (Leaderboard):** Sınav sonuçlarına göre (Net, Süre ve Puan bazlı) tüm öğrenciler arasındaki sıralama.
+
+### 📊 Performans Analizi
+- **Konu Bazlı Başarı Grafikleri:** Her konu için toplanan puanların ve doğru/yanlış oranlarının görselleştirilmesi.
+- **Zayıf Nokta Analizi (AI):** Başarı oranına göre otomatik çalışma tavsiyeleri.
+- **Gelişmiş Dashboard:** Toplam soru, net ortalaması ve çalışma sürelerinin takibi.
+
+### ⏲️ Odaklanma Araçları
+- **Pomodoro Sayacı:** Özelleştirilebilir çalışma ve mola süreleri.
+- **Focus Takibi:** Günlük ve haftalık odaklanma istatistikleri.
+
+## 🔑 Giriş Bilgileri (Test İçin)
+
+### Admin Hesabı
+- **E-posta:** `admin@focusflow.com`
 - **Şifre:** `admin123`
+
+### Öğrenci Hesabı
+- **E-posta:** `ogrenci@focusflow.com`
+- **Şifre:** `user123`
+
+## 🛠️ Teknik Yığın (Tech Stack)
+
+### Backend
+- **Java 21 & Spring Boot 3.2**
+- **Spring Security & JWT:** Güvenli kimlik doğrulama ve role-based yetkilendirme.
+- **Spring Data JPA:** Hibernate tabanlı ORM yönetimi.
+- **PostgreSQL / H2:** Üretim ve geliştirme ortamları için veritabanı desteği.
+- **Lombok:** Boilerplate kod azaltımı.
+
+### Frontend
+- **React 18 & Vite:** Hızlı ve modern frontend geliştirme.
+- **Tailwind CSS:** "Glassmorphism" ve "Dark Mode" odaklı premium UI tasarımı.
+- **Recharts:** Veri görselleştirme ve başarı grafikleri.
+- **Zustand:** Hafif ve performanslı state yönetimi.
+- **Lucide Icons:** Modern ikon seti.
+
+## 🔑 Kullanım Rehberi
+
+### Admin Girişi
+- Ders, konu, soru ve sınav ekleme/düzenleme yetkisi.
+- MEB özetlerini yükleme ve PDF linklerini yönetme.
+
+### Öğrenci Girişi
+- Ders videolarını izleme ve "tamamlandı" işaretleme.
+- Deneme sınavlarına girme ve anlık sıralama takibi.
+- Kişisel istatistiklerini ve konu bazlı puanlarını görüntüleme.
+
+---
+*FocusFlow - Geleceğine Odaklan.*

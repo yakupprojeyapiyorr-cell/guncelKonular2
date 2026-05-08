@@ -1,5 +1,6 @@
 package com.tezprojesi.api.controller;
 
+import com.tezprojesi.api.dto.PomodoroTrendResponse;
 import com.tezprojesi.api.dto.StatisticsResponse;
 import com.tezprojesi.api.dto.WeakTopicResponse;
 import com.tezprojesi.api.service.StatisticsService;
@@ -29,5 +30,11 @@ public class StatisticsController {
     public ResponseEntity<List<WeakTopicResponse>> getWeakTopics(Authentication authentication) {
         UUID userId = UUID.fromString(authentication.getPrincipal().toString());
         return ResponseEntity.ok(statisticsService.getWeakTopics(userId));
+    }
+
+    @GetMapping("/me/pomodoro-trend")
+    public ResponseEntity<List<PomodoroTrendResponse>> getPomodoroTrend(Authentication authentication) {
+        UUID userId = UUID.fromString(authentication.getPrincipal().toString());
+        return ResponseEntity.ok(statisticsService.getPomodoroTrend(userId));
     }
 }
