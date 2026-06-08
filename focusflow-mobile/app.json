@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "FocusFlow Mobile",
+    "slug": "focusflow-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.focusflow.mobile"
+    },
+    "extra": {
+      "apiUrl": "http://10.0.2.2:8080/api"
+    }
+  }
+}

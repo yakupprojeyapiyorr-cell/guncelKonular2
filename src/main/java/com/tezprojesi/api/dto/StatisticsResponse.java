@@ -1,0 +1,24 @@
+package com.tezprojesi.api.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class StatisticsResponse {
+    private Integer totalQuestions;
+    private Integer totalCorrect;
+    private Double correctPercentage;
+    private Integer totalExams;
+    private Double averageNetScore;
+    private Integer completedTasks;
+    private Integer pendingTasks;
+    private Integer todayPomodoroMinutes;
+    private Integer totalPomodoroMinutes;
+    private Double totalPomodoroHours;
+    private java.util.List<TopicStatisticsResponse> topicStats;
+}

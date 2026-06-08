@@ -1,0 +1,87 @@
+spring:
+  application:
+    name: focusFlow
+  profiles:
+    active: local
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/focusflow}
+    username: ${DATABASE_USERNAME:focusflow}
+    password: ${DATABASE_PASSWORD:focusflow123}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+  h2:
+    console:
+      enabled: false
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/focusflow}
+    username: ${DATABASE_USERNAME:focusflow}
+    password: ${DATABASE_PASSWORD:focusflow123}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+
+---
+# Ortak Ayarlar
+jwt:
+  secret: ${JWT_SECRET:your-super-secret-key-change-in-production}
+  expiration: 3600000
+  refresh-expiration: 604800000
+
+gemini:
+  api:
+    key: ${GEMINI_API_KEY:}
+    url: ${GEMINI_API_URL:https://generativelanguage.googleapis.com/v1beta/models}
+    model: ${GEMINI_MODEL:gemini-2.5-flash}
+
+server:
+  port: 8080
+
+springdoc:
+  api-docs:
+    path: /docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+logging:
+  level:
+    root: INFO
+    com.tezprojesi: DEBUG
+
+app:
+  upload:
+    dir: ${UPLOAD_DIR:uploads}
+  cors:
+    allowed-origins: ${ALLOWED_ORIGINS:http://localhost:3000,http://localhost:4173,http://localhost:5173,http://127.0.0.1:3000,http://127.0.0.1:4173,http://127.0.0.1:5173}
+  features:
+    social-enabled: ${FEATURE_SOCIAL_ENABLED:false}
+    messaging-enabled: ${FEATURE_MESSAGING_ENABLED:false}
+    personalized-exams-enabled: ${FEATURE_PERSONALIZED_EXAMS_ENABLED:false}
+    analysis-enabled: ${FEATURE_ANALYSIS_ENABLED:false}
+    notification-center-enabled: ${FEATURE_NOTIFICATION_CENTER_ENABLED:false}

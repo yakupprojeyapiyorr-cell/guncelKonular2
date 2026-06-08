@@ -1,0 +1,48 @@
+spring:
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL
+    username: sa
+    password: 
+    driver-class-name: org.h2.Driver
+  sql:
+    init:
+      mode: never
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+    show-sql: false
+  h2:
+    console:
+      enabled: true
+
+# Gemini Config
+gemini:
+  api:
+    key: ${GEMINI_API_KEY:test-key-placeholder}
+    model: ${GEMINI_MODEL:gemini-2.5-flash}
+
+# CORS Configuration
+app:
+  cors:
+    allowed-origins: http://localhost:3000,http://localhost:4173,http://localhost:5173,http://localhost:5174,http://localhost:8080,http://127.0.0.1:3000,http://127.0.0.1:4173,http://127.0.0.1:5173,http://127.0.0.1:5174
+  features:
+    social-enabled: false
+    messaging-enabled: false
+    personalized-exams-enabled: false
+    analysis-enabled: false
+    notification-center-enabled: false
+
+# JWT
+jwt:
+  secret: ${JWT_SECRET:test-super-secret-key-for-testing}
+  expiration: 86400000
+
+logging:
+  level:
+    com.tezprojesi: DEBUG
