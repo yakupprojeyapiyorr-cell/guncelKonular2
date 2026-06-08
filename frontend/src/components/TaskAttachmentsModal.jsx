@@ -79,7 +79,7 @@ export default function TaskAttachmentsModal({ taskId, onClose }) {
     // Construct full URL for download since the backend returns a relative URI.
     // apiClient.defaults.baseURL usually contains the backend URL.
     const getDownloadUrl = (uri) => {
-        const baseUrl = apiClient.defaults.baseURL || 'http://localhost:8080';
+        const baseUrl = apiClient.defaults.baseURL || import.meta.env.VITE_API_URL || 'https://focusflow-api-tzbl.onrender.com';
         // Remove trailing slash from base if present
         const base = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
         // Remove /api from base if the URI already contains /api

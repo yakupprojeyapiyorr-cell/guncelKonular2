@@ -19,7 +19,7 @@ export default function FileViewer({ file, onClose }) {
 
     const getDownloadUrl = (uri) => {
         if (!uri) return '';
-        const baseUrl = 'http://localhost:8080'; // backend URL
+        const baseUrl = import.meta.env.VITE_API_URL || 'https://focusflow-api-tzbl.onrender.com'; // backend URL
         const base = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
         const cleanBase = base.endsWith('/api') && uri.startsWith('/api') ? base.slice(0, -4) : base;
         return `${cleanBase}${uri}`;

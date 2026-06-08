@@ -2,9 +2,9 @@ import axios from 'axios'
 import { useAuthStore } from '../store/authStore'
 
 const inferredApiBaseUrl =
-  typeof window !== 'undefined'
-    ? `${window.location.protocol}//${window.location.hostname}:8080`
-    : 'http://localhost:8080'
+  typeof window !== 'undefined' && window.location.hostname !== 'localhost'
+    ? `https://focusflow-api-tzbl.onrender.com`
+    : 'https://focusflow-api-tzbl.onrender.com'
 
 const API_BASE_URL = 
   process.env.NODE_ENV === 'production'

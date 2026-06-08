@@ -44,7 +44,7 @@ export default function PomodoroPage() {
 
   const handleFileDownload = useCallback(async (fileUrl, fileName) => {
     try {
-      const baseUrl = 'http://localhost:8080'
+      const baseUrl = import.meta.env.VITE_API_URL || 'https://focusflow-api-tzbl.onrender.com'
       const base = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl
       const cleanBase = base.endsWith('/api') && fileUrl.startsWith('/api') ? base.slice(0, -4) : base
       const downloadUrl = `${cleanBase}${fileUrl}`
@@ -439,7 +439,7 @@ function getFileIcon(fileType) {
 
 // Helper function to get download URL
 function getDownloadUrl(uri) {
-  const baseUrl = 'http://localhost:8080'
+  const baseUrl = import.meta.env.VITE_API_URL || 'https://focusflow-api-tzbl.onrender.com'
   const base = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl
   const cleanBase = base.endsWith('/api') && uri.startsWith('/api') ? base.slice(0, -4) : base
   return `${cleanBase}${uri}`
