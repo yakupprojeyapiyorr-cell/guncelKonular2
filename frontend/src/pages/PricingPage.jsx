@@ -13,7 +13,7 @@ export default function PricingPage() {
     setLoading(true)
     try {
       // Mock payment simulation API call. In real life, redirect to Stripe
-      await apiClient.post('/auth/upgrade-premium') // This endpoint might not exist yet, we'll create it
+      await apiClient.post('/subscription/upgrade-premium')
       
       // Update local storage user object
       setUser({ ...user, subscriptionType: 'PREMIUM' }, token)

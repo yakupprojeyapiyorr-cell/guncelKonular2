@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,8 +16,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AiService {
 
-    @Value("${openai.api.key:}")
-    private String apiKey;
+    // OpenAI kaldırıldı — tüm AI çağrıları Gemini üzerinden yapılıyor
 
     @Value("${gemini.api.key:}")
     private String geminiApiKey;
@@ -120,59 +118,26 @@ public class AiService {
         throw new RuntimeException("Boş yanıt geldi");
     }
 
+    /**
+     * System prompt + user prompt birleştirilerek Gemini'ye gönderilir.
+     * AiStudyPlanService ve benzeri servisler bu metodu kullanır.
+     */
     public String generateResponse(String systemPrompt, String userPrompt) {
-        if (apiKey == null || apiKey.isEmpty()) {
-            return "{\"error\": \"OpenAI API Key is not configured. Please set OPENAI_API_KEY in your environment.\"}";
-        }
-
-        String url = "https://api.openai.com/v1/chat/completions";
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(apiKey);
-
-        Map<String, Object> request = Map.of(
-                "model", "gpt-4-turbo-preview",
-                "messages", List.of(
-                        Map.of("role", "system", "content", systemPrompt),
-                        Map.of("role", "user", "content", userPrompt)),
-                "response_format", Map.of("type", "json_object"));
-
-        try {
-            HttpEntity<Map<String, Object>> entity = new HttpEntity<>(request, headers);
-            @SuppressWarnings("unchecked")
-            ResponseEntity<Map<String, Object>> response = restTemplate.postForEntity(
-                    url,
-                    entity,
-                    (Class<Map<String, Object>>) (Class<?>) Map.class);
-
-            if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
-                Object choicesObject = response.getBody().get("choices");
-                if (choicesObject instanceof List<?> choices && !choices.isEmpty()) {
-                    Object firstChoice = choices.get(0);
-                    if (firstChoice instanceof Map<?, ?> choiceMap) {
-                        Object message = choiceMap.get("message");
-                        if (message instanceof Map<?, ?> messageMap) {
-                            Object content = messageMap.get("content");
-                            if (content instanceof String contentText) {
-                                return contentText;
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            return "{\"error\": \"AI generation failed: " + e.getMessage() + "\"}";
-        }
-
-        return "{\"error\": \"Unexpected response from AI provider\"}";
+        String combinedPrompt = systemPrompt + "\n\n" + userPrompt;
+        return callGeminiWithFallback(combinedPrompt);
     }
 
+    /**
+     * JSON formatında yanıt döndürmesi için Gemini'ye prompt'a talimat eklenir.
+     */
     public String generateJsonResponse(String systemPrompt, String userPrompt) {
-        return generateResponse(systemPrompt, userPrompt);
+        String jsonInstruction = systemPrompt
+                + "\n\nÖNEMLİ: Yanıtını MUTLAKA geçerli bir JSON formatında ver. "
+                + "Açıklama veya ek metin ekleme, sadece JSON döndür.\n\n";
+        return callGeminiWithFallback(jsonInstruction + userPrompt);
     }
 
     public String generateMultimodalResponse(String systemPrompt, String userPrompt, List<String> imageUrls) {
-        return "{\"answer\": \"Gorsel analizi su an desteklenmemektedir.\", \"explanation\": \"Mock yanit\"}";
+        return generateResponse(systemPrompt, userPrompt);
     }
 }

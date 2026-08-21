@@ -5,11 +5,9 @@ import com.tezprojesi.api.dto.AuthResponse;
 import com.tezprojesi.api.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -33,12 +31,5 @@ public class AuthController {
         String email = request.get("email");
         String code = request.get("code");
         return ResponseEntity.ok(authService.verifyEmail(email, code));
-    }
-
-    @PostMapping("/upgrade-premium")
-    public ResponseEntity<Void> upgradePremium(Authentication authentication) {
-        UUID userId = UUID.fromString(authentication.getPrincipal().toString());
-        authService.upgradePremium(userId);
-        return ResponseEntity.ok().build();
     }
 }
