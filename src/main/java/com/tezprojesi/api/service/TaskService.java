@@ -42,6 +42,15 @@ public class TaskService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Kullanıcı bulunamadı"));
 
+        // Free tier restriction
+        if (user.getSubscriptionType() == User.SubscriptionType.FREE) {
+            LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+            long tasksToday = taskRepository.countByUserAndCreatedAtAfter(user, startOfDay);
+            if (tasksToday >= 5) {
+                throw new RuntimeException("Ücretsiz planda günde en fazla 5 görev ekleyebilirsiniz. Lütfen Premium'a geçin.");
+            }
+        }
+
 
 
         Task task = Task.builder()

@@ -25,7 +25,7 @@ Uygulama, **Spring Boot** tabanlı sağlam bir backend mimarisi ve **React (Vite
 
 ## ✨ Temel Özellikler
 
-- **🔒 Güvenli Kimlik Doğrulama:** JWT tabanlı, E-posta doğrulama kodlu (MailTrap/SMTP) kayıt ve giriş sistemi.
+- **🔒 Güvenli Kimlik Doğrulama:** JWT tabanlı güvenli kayıt ve giriş sistemi (E-posta doğrulama altyapısı simülasyon olarak kodlanmıştır).
 - **⏱️ Pomodoro Sayacı:** Özelleştirilebilir çalışma/mola süreleri ve arka planda çalışma desteği.
 - **📝 Görev Yönetimi (To-Do):** Klasörleme, önceliklendirme ve acil görevler widget'ı.
 - **🎯 Hedef Takibi:** "Aylık 50 saat çalışma", "100 test çözme" gibi kişisel hedefler belirleme ve ilerleme (Progress Bar) takibi.
@@ -43,7 +43,7 @@ Uygulama, **Spring Boot** tabanlı sağlam bir backend mimarisi ve **React (Vite
 - **Spring Data JPA (Hibernate)**
 - **PostgreSQL**
 - **Docker & Docker Compose**
-- **MailTrap** (E-posta doğrulama için)
+
 - **Gemini AI API**
 
 ### Web (Frontend)
